@@ -21,6 +21,11 @@ class User {
     //  user = req.body 
         return connection.query("INSERT INTO users SET ?", user, cb)
     }
+    //  login
+    getLogin(username,pass,cb){
+        //  id = object of primary key {email : danghung0201@gmail.com}
+        return connection.query("SELECT * FROM users WHERE username = ? AND password = ?",[username,pass],cb)
+    }
 
     //  update user 
     //  delete user

@@ -1,5 +1,7 @@
 const User = require("../database/user.js");
-
+// JWT
+var jwt = require('jsonwebtoken');
+var secret = "danghungnguyenhuong";
 
 var user = new User;
 //  service
@@ -97,5 +99,34 @@ class service {
 
     }
     // end function register
+    //  api login 
+    login = (req, res)=>{
+        let username = req.body.username
+        let password = req.body.password
+      
+        this.user.getLogin(username,password, (err, result) => {
+            if (err) throw err
+            if (result.length > 0) {
+                jwt.sign(req.body.username, secret, function(err, token) {
+                    if(err){
+                        console.log("Token loi " + err);
+                        res.json({kq:0});
+                    }else{
+            
+                        //Save session
+                        req.session.token = token
+                        res.send({ note: 'ok' });
+                    }
+                })
+                
+            } else {
+                res.send({ note: 'wrong email or password' })
+            }
+        })
+        
+    }
+    //  end login
+
+        
 }
 module.exports = service
