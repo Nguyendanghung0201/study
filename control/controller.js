@@ -2,15 +2,15 @@ const User = require("../database/user.js");
 // JWT
 var jwt = require('jsonwebtoken');
 var secret = "danghungnguyenhuong";
+//  session
+var session = require('express-session');
 
-var user = new User;
 //  service
 class service {
     constructor() {
         //  using User connect to database
-        this.user = new User
+        this.userService = new User
         //  req vilidate of username , password , email , phone
-
         this.reg_email = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
         this.reg_phone = /^(1\s|1|)?((\(\d{3}\))|\d{3})(\-|\s)?(\d{3})(\-|\s)?(\d{4})$/;
         this.reg_password = /^(?=\S*[a-z])(?=\S*[A-Z])(?=\S*\d)(?=\S*[^\w\s])\S{8,}$/;
@@ -22,7 +22,7 @@ class service {
 
     //  api post user register account 
 
-    register =  (req, res) => {
+    register = (req, res) => {
         let { username, email, password, phone } = req.body;
 
         //  note err to client
@@ -61,72 +61,90 @@ class service {
                 res.json({ note: note, err: err })
             } else {
 
-                 this.user.getUser({ username }, (err, result) => {
+                this.userService.getUser({ username }, (err, result) => {
                     if (err) throw err
                     if (result.length >= 1) {
                         note = "email da ton tai";
                         err = [1];
                         res.json({ note: note, err: err })
                     } else {
-                        this.user.getUser({ email }, (err, result) => {
+                        this.userService.getUser({ email }, (err, result) => {
                             if (err) throw err
                             if (result.length >= 1) {
                                 let note = "email da ton tai";
                                 let err = [1];
                                 res.json({ note: note, err: err })
                             } else {
-                                this.user.getUser({ phone }, (err, result) => {
+                                // this.userService.getUser({ phone }, (err, result) => {
+                                //     if (err) throw err
+                                //     if (result.length >= 1) {
+                                //         let note = " sdt da ton tai";
+                                //         let err = [3];
+                                //         res.json({ note: note, err: err })
+                                //     } else {
+                                //  USER Register susseccfully , insert into table
+                                this.userService.Insert_users(req.body, (err, result) => {
                                     if (err) throw err
-                                    if (result.length >= 1) {
-                                        let note = " sdt da ton tai";
-                                        let err = [3];
-                                        res.json({ note: note, err: err })
-                                    } else {
-                                        //  USER Register susseccfully , insert into table
-                                        this.user.Insert_users(req.body, (err, result) => {
-                                            if (err) throw err
-                                            res.json({ note: "ok" })
-                                        })
-
-                                    }
+                                    res.json({ note: "ok" })
                                 })
+
                             }
                         })
                     }
                 })
             }
-        }
 
+        }
     }
+
     // end function register
     //  api login 
-    login = (req, res)=>{
+    login = (req, res) => {
         let username = req.body.username
         let password = req.body.password
-      
-        this.user.getLogin(username,password, (err, result) => {
+
+        this.userService.getLogin(username, password, (err, result) => {
             if (err) throw err
             if (result.length > 0) {
-                jwt.sign(req.body.username, secret, function(err, token) {
-                    if(err){
+                jwt.sign(req.body.username, secret, function (err, token) {
+                    if (err) {
                         console.log("Token loi " + err);
-                        res.json({kq:0});
-                    }else{
-            
+                        res.json({ kq: 0 });
+                    } else {
+
                         //Save session
                         req.session.token = token
                         res.send({ note: 'ok' });
                     }
                 })
-                
+
             } else {
                 res.send({ note: 'wrong email or password' })
             }
         })
-        
+
     }
     //  end login
+    //  check Authentication 
+    checkAuthentication = (req, res, next) => {
+        if (req.session.token) {
+            // Verify
+            jwt.verify(req.session.token, secret, function (err, decoded) {
+                if (err) {
+                    console.log("Token sai");
+                    res.redirect("./login");
+                } else {
+                    req.currentUser = decoded;
+                    return next();
+                }
+            });
 
-        
+        } else {
+            console.log("Khong tim thay session");
+            res.redirect("./");
+        }
+    }
+    //  end function check Authentication
+
 }
 module.exports = service

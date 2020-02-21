@@ -31,4 +31,5 @@ class User {
     //  delete user
 
 }
+
 module.exports= User

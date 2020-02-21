@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 
-class Home extends Component {
+class REGISTER extends Component {
 
     constructor(props) {
         super(props);
@@ -41,7 +41,6 @@ class Home extends Component {
     };
     _onLogin = ()=>{
         window.location.replace('/');
-        return 5 ;
     }
  
     render() {

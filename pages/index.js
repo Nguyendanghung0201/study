@@ -7,14 +7,13 @@ export default class HOME extends Component {
             profile: {},
             email_id: false,
             note: '',
-            email: '',
+            username: '',
             password: '',
             active: true
         }
     }
     componentDidMount() {
         const email_id = localStorage.getItem("key");
-
         if (email_id === undefined || email_id === null || email_id === '' || email_id.trim() === '') {
         } else {
             fetch('/api/test/' + email_id)
@@ -36,7 +35,7 @@ export default class HOME extends Component {
         window.location.replace('/');
     };
     _onLogin = () => {
-        const { email, password } = this.state;
+        const { username, password } = this.state;
         fetch('/api/login', {
             method: 'POST',
             headers: {
@@ -44,7 +43,7 @@ export default class HOME extends Component {
                 'Content-Type': 'application/json',
             },
             body: JSON.stringify({
-                email,
+                username,
                 password
             })
         })
@@ -63,45 +62,8 @@ export default class HOME extends Component {
     _onRegister = () => {
         window.location.replace('/register')
     };
-    _onCreate_Trade = () => {
-        window.location.replace('/trade')
-    }
-    _onCreate_Loan = () => {
-        window.location.replace('/loan')
-
-    }
-    _onCreateNews = () => {
-        fetch('/api/insert/source_new', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: 'danghung',
-                source: ["Coindesk", "Bitcoin News", "Coin"]
-            })
-        }).then(res => res.json())
-            .then(data => {
-                console.log(data)
-            })
-    }
-    _onGetNew = () => {
-        fetch('/api/source_new', {
-            method: 'POST',
-            headers: {
-                Accept: 'application/json',
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({
-                username: 'danghung'
-            })
-        }).then(res => res.json())
-            .then(data => {
-                console.log(data)
-            })
-    }
-
+  
+  
     render() {
 
         const { profile, email_id, note } = this.state;

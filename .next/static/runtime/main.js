@@ -4818,7 +4818,7 @@ function connect(options) {
       error.name = err.name;
       error.stack = err.stack; // __NEXT_DIST_DIR is provided by webpack
 
-      (0, _sourceMapSupport.rewriteStacktrace)(error, "C:\\Users\\Tony Flash\\Desktop\\project\\backendvn-danghung\\backend_test\\.next");
+      (0, _sourceMapSupport.rewriteStacktrace)(error, "C:\\Users\\Tony Flash\\Desktop\\study\\study\\.next");
       return error;
     }
   };
