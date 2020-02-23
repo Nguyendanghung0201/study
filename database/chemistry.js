@@ -8,19 +8,9 @@ class Chemistry {
     constructor() {
     }
     //  insert question to table chemistry and insert anwser to choice table
-    Insert_question(data, a , b , c , d, cb) {
+    Insert_question(data, cb) {
         //  admin input question ? anser
-        return connection.query("INSERT INTO chemistry SET ?", data, (err, result)=>{
-            if (err) throw err
-            let qs_id = result.insertId
-            let value = [
-                [qs_id, a],
-                [qs_id, b],
-                [qs_id, c],
-                [qs_id, d],
-            ]
-            connection.query("INSERT INTO choicecchemistry (ques_id, choose) VALUES  ?",[value],cb)
-        })
+        return connection.query("INSERT INTO chemistry SET ?", data,cb)
     }
     //  get all users from table users
     getAll_question(cb) {

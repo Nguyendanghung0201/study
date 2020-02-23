@@ -14,7 +14,11 @@ class User {
     //  get users from primary key
     getUser(id,cb){
         //  id = object of primary key {email : danghung0201@gmail.com}
-        return connection.query("SELECT * FROM users WHERE ?",id,cb)
+        return connection.query("SELECT * FROM users WHERE ?",[id],cb)
+    }
+    GetUsername(username, cb){
+         //  id = object of primary key {email : danghung0201@gmail.com}
+         return connection.query("SELECT * FROM users WHERE username = ?",[username],cb)
     }
     //  insert user to table users
     Insert_users(user, cb){
