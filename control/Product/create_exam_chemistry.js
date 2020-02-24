@@ -15,7 +15,6 @@ class CreateTest_service {
     
         let max_radom = data.length
         let theory = practice = voco= huuco = 0
-        console.log()
         for (let i = 0; i <= data.length; i++) {
             let ques_rd = Math.floor(Math.random() * max_radom)
             let ques_ele = [exam_id, data[ques_rd].id]
@@ -23,14 +22,11 @@ class CreateTest_service {
                 if (value.length == 50) {
                     break
                 }
-                console.log(typeof(data[ques_rd].categories))
                 if (data[ques_rd].categories == 0 && voco <=30) {
-                    console.log(" push voco")
                     value.push(ques_ele)
                     voco++
                 } else {
                     if (huuco <= 30) {
-                        console.log(" push huco")
                         value.push(ques_ele)
                         huuco++
                     }
@@ -65,7 +61,7 @@ class CreateTest_service {
                             //  Get data question to sent client
                             this.TestRepository.Get_question_test(exam_id, (err, result)=>{
                                 if (err) throw err
-                                let data_test =  JSON.parse(JSON.stringify(result))[0]
+                                let data_test =  JSON.parse(JSON.stringify(result))
                                 res.send({data_test})
                             })
                         })
