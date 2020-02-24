@@ -26,6 +26,7 @@ var secret = "danghungnguyenhuong";
 //  service : User, 
 var Service = require("./control/controller.js")
 var ServiceChemistry = require("./control/admin/chemistryService.js")
+var create_exam = require("./control/Product/create_exam_chemistry.js")
 
 nextApp.prepare().then(() => {
     const server = express();
@@ -40,10 +41,12 @@ nextApp.prepare().then(() => {
         secret: 'danghung0201', resave: true,
         saveUninitialized: true
     }));
+    server.use((req, res, next) => { res.header('Access-Control-Allow-Origin', '*'); res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'); if (req.method === 'OPTIONS') { res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'); res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH'); return res.status(200).json({}); }; next(); });
 
-    //  api post register new account
     var UserService = new Service
     var chemistryService = new ServiceChemistry
+    var Create_exam_chemistry = new create_exam
+    //  api post register new account
     server.post("/api/register", (req, res) => {
 
         UserService.register(req, res)
@@ -56,10 +59,14 @@ nextApp.prepare().then(() => {
 
     //   end login
     //  admin insert question 
-    server.post("/api/create_question_chemistry", (req, res)=>{
-        chemistryService.Create_question(req,res)
+    server.post("/api/create_question_chemistry", (req, res) => {
+        chemistryService.Create_question(req, res)
     })
     //  end insert question
+    //  api create a test
+    server.post("/api/create_test_chemistry", (req, res) => {
+        Create_exam_chemistry.CreateTest_exam(req, res)
+    })
     //  socket io for chatting feature
     var io = require('socket.io')(serverio);
 

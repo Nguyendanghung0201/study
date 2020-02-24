@@ -20,5 +20,11 @@ class Test {
         // update each question. 
         return connection.query("UPDATE test SET yourans = ?", [data], cb)
     }
+
+
+    //  join test table with chemistry table
+     Get_question_test = (exam_id, cb)=>{
+         return connection.query("SELECT * FROM chemistry INNER JOIN test WHERE chemistry.id = test.ques AND test.exam_id = ?",[exam_id],cb )
+     }
 }
 module.exports = Test

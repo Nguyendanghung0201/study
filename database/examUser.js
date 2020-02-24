@@ -19,6 +19,7 @@ class Exam {
     Update_exam_user = (point, cb) => {
         return connection.query("UPDATE exam SET point = ?", [point], cb)
     }
+    
 
 }
 module.exports = Exam

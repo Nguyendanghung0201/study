@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1> in put</h1><br><br>
+    
+    <input type="text" name="lname" id="id_exam">
+    <input type="button" name="lname" id="submit" onclick="myFunction()">
+    
+
+</body>
+<script>
+   
+
+    function myFunction() {
+     
+    
+        fetch("http://localhost:3001/api/create_test_chemistry", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify({
+                username : "danghung",
+                grade : 12
+            })
+        }).then((response) => response.json())
+            .then((data) => {
+                console.log(data)
+            })
+            .catch((error) => {
+                alert("loi")
+            });
+
+    }
+
+
+</script>
+
+</html>

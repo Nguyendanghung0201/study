@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <h1> in put</h1><br><br>
+    <input type="text" name="content" id="content" style="height: 50px;width: 300px; ">
+    <span>Lớp</span>
+    <input type="text" name="lname" id="grade">
+    <span>độ khó</span>
+    <input type="text" name="lname" id="lever">
+    <span>lý thuyết thực hành</span>
+    <input type="checkbox" name="lname" id="classy"><br><br>
+    <span>vô cơ hữu cơ</span>
+    <input type="checkbox" name="lname" id="categories">
+    <span>đáp án</span>
+    <input type="text" name="lname" id="answer"><br><br>
+
+    <input type="text" name="lname" id="choose1" style="height: 30px;width: 300px; ">
+    <input type="text" name="lname" id="choose2" style="height: 30px;width: 300px; ">
+
+    <input type="text" name="lname" id="choose3" style="height: 30px;width: 300px; ">
+
+    <input type="text" name="lname" id="choose4" style="height: 30px;width: 300px; " >
+    <input type="text" name="lname" id="id_exam">
+    <input type="button" name="lname" id="submit" onclick="myFunction()">
+    
+
+</body>
+<script>
+   let a = b = c =0
+   console.log(b)
+
+    function myFunction() {
+        let content = document.getElementById("content").value
+    let grade = document.getElementById("grade").value
+    let lever = document.getElementById("lever").value
+    let classy1 = document.getElementById("classy").checked
+    let categories1 = document.getElementById("categories").checked
+    let answer = document.getElementById("answer").value
+    let choose1 = document.getElementById("choose1").value
+    let choose2 = document.getElementById("choose2").value
+    let choose3 = document.getElementById("choose3").value
+    let choose4 = document.getElementById("choose4").value
+    let id_exam = document.getElementById("id_exam").value
+    let classy, categories
+     
+        classy1 ? classy = 1 : classy = 0
+        categories1 ? categories = 1 : categories = 0
+        console.log(classy)
+        let data = { content, answer, grade, lever, classy, categories, choose1, choose2, choose3, choose4, id_exam }
+        fetch("http://localhost:3001/api/create_question_chemistry", {
+            method: 'POST', // *GET, POST, PUT, DELETE, etc.
+
+            headers: {
+                'Content-Type': 'application/json'
+                // 'Content-Type': 'application/x-www-form-urlencoded',
+            },
+            body: JSON.stringify(data)
+        }).then((response) => response.json())
+            .then((data) => {
+                alert(data.result)
+            })
+            .catch((error) => {
+                alert("loi")
+            });
+
+    }
+
+
+</script>
+
+</html>
