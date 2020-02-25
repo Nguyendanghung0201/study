@@ -3,13 +3,13 @@ const connection = mysql.createConnection({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'study'
+    database: 'studydata'
 })
 const pool = mysql.createPool({
     host: 'localhost',
     user: 'root',
     password: '',
-    database: 'study',
+    database: 'studydata',
     multipleStatements: true
 })
 module.exports={

@@ -67,6 +67,15 @@ nextApp.prepare().then(() => {
     server.post("/api/create_test_chemistry", (req, res) => {
         Create_exam_chemistry.CreateTest_exam(req, res)
     })
+    //  end create a test
+    //  get old test 
+    server.post("/api/get_old_test_chemistry", (req, res)=>{
+        Create_exam_chemistry.Get_old_test(req,res)
+    })
+    // submit the test
+    server.post("/api/update_point_chemistry", (req, res)=>{
+        Create_exam_chemistry.submit_test_chemistry(req, res)
+    })
     //  socket io for chatting feature
     var io = require('socket.io')(serverio);
 
