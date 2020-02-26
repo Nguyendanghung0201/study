@@ -7,28 +7,28 @@ var  pool = db.pool ;
 class User {
     constructor() {
     }
-    //  get all users from table users
+    //  get all user from table user
     getAlluser(cb){
-        return connection.query("SELECT * FROM users",cb);
+        return connection.query("SELECT * FROM user",cb);
     }
-    //  get users from primary key
+    //  get user from primary key
     getUser(id,cb){
         //  id = object of primary key {email : danghung0201@gmail.com}
-        return connection.query("SELECT * FROM users WHERE ?",[id],cb)
+        return connection.query("SELECT * FROM user WHERE ?",[id],cb)
     }
     GetUsername(username, cb){
          //  id = object of primary key {email : danghung0201@gmail.com}
-         return connection.query("SELECT * FROM users WHERE username = ?",[username],cb)
+         return connection.query("SELECT * FROM user WHERE username = ?",[username],cb)
     }
-    //  insert user to table users
+    //  insert user to table user
     Insert_users(user, cb){
     //  user = req.body 
-        return connection.query("INSERT INTO users SET ?", user, cb)
+        return connection.query("INSERT INTO user SET ?", user, cb)
     }
-    //  login
+  
     getLogin(username,pass,cb){
         //  id = object of primary key {email : danghung0201@gmail.com}
-        return connection.query("SELECT * FROM users WHERE username = ? AND password = ?",[username,pass],cb)
+        return connection.query("SELECT * FROM user WHERE username = ? AND password = ?",[username,pass],cb)
     }
 
     //  update user 

@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Feb 25, 2020 at 04:17 AM
+-- Generation Time: Feb 26, 2020 at 03:54 AM
 -- Server version: 10.3.16-MariaDB
 -- PHP Version: 7.3.6
 
@@ -19,8 +19,23 @@ SET time_zone = "+00:00";
 /*!40101 SET NAMES utf8mb4 */;
 
 --
--- Database: `study`
+-- Database: `studydata`
 --
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `ask`
+--
+
+CREATE TABLE `ask` (
+  `id` int(11) NOT NULL,
+  `username_id` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `grade` int(255) NOT NULL,
+  `content` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `subject` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `photo` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -121,9 +136,128 @@ INSERT INTO `chemistry` (`id`, `content`, `grade`, `lever`, `classy`, `categorie
 (78, 'Cho 19,68 gam hỗn hợp gồm Mg, FeCO vào dung dịch chứa 1,22 mol NaHSO4 và 0,08 mol Fe(NO3)3, khuấy đều cho các phản ứng xảy ra hoàn toàn, thấy thoát ra hỗn hợp khí X gồm NO, N2O và 0,06 mol CO2; đồng thời thu được dung dịch Y và 3,36 gam một kim loại không', 12, 3, 1, 0, '', 'B', '10,2', '10,0 ', '10,4', '10,6', ''),
 (79, 'X, Y (MX < M) là hai peptit mạch hở, hơn kém nhau một liên kết peptit. Đun nóng 36,58 gam hỗn hợp E chứa X, Y và este Z (C5H11ON) với dung dịch NaOH vừa đủ, chưng cất dung dịch sau phản ứng, thu được 0,05 mol ancol etylic và hỗn hợp chứa 2 muối của 2 α-am', 12, 3, 1, 0, '', 'D', '45,2%', '29%', '34,1%', '27,1%', '');
 
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `clan`
+--
+
+CREATE TABLE `clan` (
+  `nameclan` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `point` int(11) NOT NULL,
+  `rankclan` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `comment`
+--
+
+CREATE TABLE `comment` (
+  `id` int(11) NOT NULL,
+  `ask_id` int(11) NOT NULL,
+  `username_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `content` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `photo` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `exam`
+--
+
+CREATE TABLE `exam` (
+  `id` int(11) NOT NULL,
+  `user_id` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `point` int(11) NOT NULL,
+  `status` varchar(255) COLLATE utf8_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `exam`
+--
+
+INSERT INTO `exam` (`id`, `user_id`, `point`, `status`) VALUES
+(3, 'danghung', 0, 'create');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `test`
+--
+
+CREATE TABLE `test` (
+  `id` int(11) NOT NULL,
+  `exam_id` int(11) NOT NULL,
+  `ques` int(11) NOT NULL,
+  `yourans` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+--
+-- Dumping data for table `test`
+--
+
+INSERT INTO `test` (`id`, `exam_id`, `ques`, `yourans`) VALUES
+(1, 3, 18, 0),
+(2, 3, 62, 0),
+(3, 3, 46, 0),
+(4, 3, 13, 0),
+(5, 3, 3, 0),
+(6, 3, 26, 0),
+(7, 3, 11, 0),
+(8, 3, 23, 0),
+(9, 3, 46, 0),
+(10, 3, 69, 0),
+(11, 3, 52, 0),
+(12, 3, 12, 0),
+(13, 3, 5, 0),
+(14, 3, 73, 0),
+(15, 3, 78, 0),
+(16, 3, 2, 0),
+(17, 3, 77, 0),
+(18, 3, 32, 0),
+(19, 3, 63, 0),
+(20, 3, 25, 0),
+(21, 3, 33, 0),
+(22, 3, 27, 0),
+(23, 3, 28, 0),
+(24, 3, 32, 0),
+(25, 3, 19, 0),
+(26, 3, 60, 0),
+(27, 3, 72, 0),
+(28, 3, 25, 0),
+(29, 3, 69, 0),
+(30, 3, 59, 0),
+(31, 3, 28, 0),
+(32, 3, 75, 0),
+(33, 3, 78, 0),
+(34, 3, 2, 0),
+(35, 3, 25, 0),
+(36, 3, 49, 0),
+(37, 3, 78, 0),
+(38, 3, 73, 0),
+(39, 3, 79, 0),
+(40, 3, 24, 0);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `users`
+--
+-- Error reading structure for table studydata.users: #1932 - Table 'studydata.users' doesn't exist in engine
+-- Error reading data for table studydata.users: #1064 - You have an error in your SQL syntax; check the manual that corresponds to your MariaDB server version for the right syntax to use near 'FROM `studydata`.`users`' at line 1
+
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `ask`
+--
+ALTER TABLE `ask`
+  ADD PRIMARY KEY (`id`);
 
 --
 -- Indexes for table `chemistry`
@@ -132,14 +266,57 @@ ALTER TABLE `chemistry`
   ADD PRIMARY KEY (`id`);
 
 --
+-- Indexes for table `clan`
+--
+ALTER TABLE `clan`
+  ADD PRIMARY KEY (`nameclan`),
+  ADD UNIQUE KEY `nameclan` (`nameclan`);
+
+--
+-- Indexes for table `comment`
+--
+ALTER TABLE `comment`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `exam`
+--
+ALTER TABLE `exam`
+  ADD PRIMARY KEY (`id`);
+
+--
+-- Indexes for table `test`
+--
+ALTER TABLE `test`
+  ADD PRIMARY KEY (`id`);
+
+--
 -- AUTO_INCREMENT for dumped tables
 --
 
 --
--- AUTO_INCREMENT for table `chemistry`
+-- AUTO_INCREMENT for table `ask`
 --
-ALTER TABLE `chemistry`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=80;
+ALTER TABLE `ask`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `comment`
+--
+ALTER TABLE `comment`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
+-- AUTO_INCREMENT for table `exam`
+--
+ALTER TABLE `exam`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
+
+--
+-- AUTO_INCREMENT for table `test`
+--
+ALTER TABLE `test`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=41;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;

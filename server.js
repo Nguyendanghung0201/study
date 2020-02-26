@@ -5,28 +5,18 @@ const nextApp = next({ dev });
 const routes = require('./routes');
 var bodyParser = require('body-parser');
 const nextHandle = routes.getRequestHandler(nextApp);
-const saltRounds = 10;
-var mysql = require('mysql');
-const connection = mysql.createConnection({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'study'
-})
-const pool = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: '',
-    database: 'study',
-    multipleStatements: true
-})
-// JWT
-var jwt = require('jsonwebtoken');
-var secret = "danghungnguyenhuong";
+
+
+const passport = require('passport');
+const FacebookStrategy = require('passport-facebook').Strategy;
+
 //  service : User, 
 var Service = require("./control/controller.js")
 var ServiceChemistry = require("./control/admin/chemistryService.js")
 var create_exam = require("./control/Product/create_exam_chemistry.js")
+var config_fb = require("./control/facebook/config.js")
+var login_fb = require("./control/facebook/login_facebook.js")
+
 
 nextApp.prepare().then(() => {
     const server = express();
@@ -42,13 +32,42 @@ nextApp.prepare().then(() => {
         saveUninitialized: true
     }));
     server.use((req, res, next) => { res.header('Access-Control-Allow-Origin', '*'); res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'); if (req.method === 'OPTIONS') { res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization'); res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH'); return res.status(200).json({}); }; next(); });
+    //  using passport to get facebook token
+    // Passport session setup.
+    passport.serializeUser(function (user, done) {
+        done(null, user);
+    });
 
+    passport.deserializeUser(function (obj, done) {
+        done(null, obj);
+    });
+
+    // Use the FacebookStrategy within Passport.
+    passport.use(new FacebookStrategy(config_fb,
+        (accessToken, refreshToken, profile, done) => {
+            process.nextTick(function(){
+                login_facebook.Get_infor(accessToken, refreshToken, profile, done)
+            });
+        }
+    ));
+    //  set up server
+    server.use(passport.initialize());
+    server.use(passport.session());
+    //  
     var UserService = new Service
     var chemistryService = new ServiceChemistry
     var Create_exam_chemistry = new create_exam
+    var login_facebook = new login_fb
+    // authen by facebook
+    server.get('/auth/facebook', passport.authenticate('facebook', { scope: 'email' }));
+
+    server.get('/auth/facebook/callback',
+        passport.authenticate('facebook', { successRedirect: '/login_facebook', failureRedirect: '/register' }),
+        function (req, res) {
+            res.redirect('/login_facebook');
+        });
     //  api post register new account
     server.post("/api/register", (req, res) => {
-
         UserService.register(req, res)
     })
     // end api
@@ -56,7 +75,6 @@ nextApp.prepare().then(() => {
     server.post("/api/login", (req, res) => {
         UserService.login(req, res)
     })
-
     //   end login
     //  admin insert question 
     server.post("/api/create_question_chemistry", (req, res) => {
@@ -69,37 +87,22 @@ nextApp.prepare().then(() => {
     })
     //  end create a test
     //  get old test 
-    server.post("/api/get_old_test_chemistry", (req, res)=>{
-        Create_exam_chemistry.Get_old_test(req,res)
+    server.post("/api/get_old_test_chemistry", (req, res) => {
+        Create_exam_chemistry.Get_old_test(req, res)
     })
     // submit the test
-    server.post("/api/update_point_chemistry", (req, res)=>{
+    server.post("/api/update_point_chemistry", (req, res) => {
         Create_exam_chemistry.submit_test_chemistry(req, res)
     })
-    //  socket io for chatting feature
-    var io = require('socket.io')(serverio);
-
-    io.on('connection', function (socket) {
-        console.log(socket.id + ': connected');
-        socket.emit('id', socket.id);
-
-        socket.on('disconnect', function () {
-            console.log(socket.id + ': disconnected')
-        })
-
-        socket.on('sendChat', data => {
-            io.sockets.emit('receiveChat', data);
-            console.log(data);
-        })
-
-    });
     // 
-
+    server.get('/login_facebook', (req, res)=>{
+        res.send({re : "ok"})
+    })
     server.get("*", (req, res) => {
         return nextHandle(req, res)
     });
 
-    serverio.listen(3001, (err) => {
+    serverio.listen(3000, (err) => {
         if (err) {
             throw err;
         }

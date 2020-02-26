@@ -39,6 +39,7 @@ class CreateTest_service {
         }
 
     }
+    // create a test 
     CreateTest_exam = (req, res) => {
         let { username, grade } = req.body
         console.log(req.body)
@@ -46,6 +47,7 @@ class CreateTest_service {
         this.userRepository.GetUsername(username, (err, result) => {
             if (err) throw err
             if (result.length > 0) {
+                //  check any exam  has been created yet ? 
                 this.ExamRepository.Get_old_test(username, (err, result) => {
                     if (err) throw err
                     let data_old = JSON.parse(JSON.stringify(result))[0]
